@@ -16,7 +16,15 @@ jobs:
         with:
           node-version: "20"
       - run: pip install -r requirements-dev.txt
-      - run: python -m pytest -q
+      - name: Testes do Python
+        shell: bash
+        run: |
+          python -m pytest -q --tb=short -p no:cacheprovider > saida.txt 2>&1 && ok=1 || ok=0
+          cat saida.txt
+          if [ "$ok" = 0 ]; then
+            grep -E "^(FAILED|ERROR)|^E " saida.txt | head -25 | while IFS= read -r l; do echo "::error::${l:0:300}"; done
+            exit 1
+          fi
       - name: Testes do JavaScript
         shell: bash
         run: for f in tests/*.test.js; do node "$f" || exit 1; done
