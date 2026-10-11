@@ -280,9 +280,18 @@ def antes_de_cada_requisicao():
         backup_antes_de_gravar()
 
 
+class _Conexao(sqlite3.Connection):
+    """Conexão que FECHA ao sair do 'with' (a padrão do Python só confirma e deixa o arquivo preso no Windows)."""
+    def __exit__(self, *args):
+        try:
+            return super().__exit__(*args)
+        finally:
+            self.close()
+
+
 def conectar():
-    """Abre uma conexão com o banco. Sempre feche após usar (o 'with' faz isso automaticamente)."""
-    con = sqlite3.connect(BANCO_DE_DADOS)
+    """Abre uma conexão com o banco. O 'with' confirma e fecha automaticamente."""
+    con = sqlite3.connect(BANCO_DE_DADOS, factory=_Conexao)
     con.row_factory = sqlite3.Row  # Permite acessar colunas pelo nome (ex: row["nome"])
     return con
 
@@ -962,7 +971,7 @@ def iniciar_bot_telegram():
 # ============================================================
 # Aparência (tema, cor de destaque, tamanho). Fica em arquivo próprio ao lado da pasta 'memoria',
 # não no banco: assim não entra no histórico de desfazer e não mexe nos seus dados.
-APP_VERSAO = "2.5.6"
+APP_VERSAO = "2.5.7"
 PALETAS_ESCURAS = ("concreto", "gofre", "grafite", "meianoite", "floresta", "vinho", "ardosia", "preto")
 PALETAS_CLARAS = ("claro", "areia", "mar", "menta")
 APARENCIA_PADRAO = {"paleta": "concreto", "destaque": "bordo", "densidade": "normal", "status": "paleta"}
