@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="{{ aparencia.tema }}" data-paleta="{{ aparencia.paleta }}" data-accent="{{ aparencia.destaque }}" data-densidade="{{ aparencia.densidade }}" data-status="{{ aparencia.status }}" style="--a-custom:{{ aparencia.cor }};--s-ok:{{ aparencia.s_ok }};--s-ruim:{{ aparencia.s_ruim }};--s-atencao:{{ aparencia.s_atencao }}{% if aparencia.destaque == 'custom' %};--on-accent:{{ aparencia.sobre }}{% endif %}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gofre</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/importacao.css') }}">
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><symbol id="i-dash" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9" rx="2"/><rect x="14" y="3" width="7" height="5" rx="2"/><rect x="14" y="12" width="7" height="9" rx="2"/><rect x="3" y="16" width="7" height="5" rx="2"/></symbol><symbol id="i-relat" viewBox="0 0 24 24"><path d="M3 20h18"/><path d="M5 15l4-5 4 3 6-8"/><path d="M15 5h4v4"/></symbol><symbol id="i-orc" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3v9l6.4 6.4"/></symbol><symbol id="i-entrada" viewBox="0 0 24 24"><path d="M12 3v12"/><path d="M7 11l5 5 5-5"/><path d="M4 20h16"/></symbol><symbol id="i-cartao" viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="14" rx="3"/><path d="M2.5 10h19"/><path d="M6.5 15h4"/></symbol><symbol id="i-pontual" viewBox="0 0 24 24"><path d="M13 2L4.5 13.5H11L10 22l8.5-11.5H13L13 2z"/></symbol><symbol id="i-fixos" viewBox="0 0 24 24"><path d="M17 3l3 3-3 3"/><path d="M4 11V9a3 3 0 013-3h13"/><path d="M7 21l-3-3 3-3"/><path d="M20 13v2a3 3 0 01-3 3H4"/></symbol><symbol id="i-importar" viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V8l-5-5z"/><path d="M14 3v5h5"/><path d="M12 17v-6"/><path d="M9.5 13.5L12 11l2.5 2.5"/></symbol><symbol id="i-cfg" viewBox="0 0 24 24"><path d="M4 7h10"/><path d="M18 7h2"/><circle cx="16" cy="7" r="2"/><path d="M4 17h2"/><path d="M10 17h10"/><circle cx="8" cy="17" r="2"/></symbol><symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></symbol><symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20v-1a5 5 0 015-5h3a5 5 0 015 5v1"/><circle cx="17.5" cy="9" r="2.5"/><path d="M18 14.2a4 4 0 013.5 4V20"/></symbol><symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 7a2 2 0 012-2h4l2 2.5h8a2 2 0 012 2V18a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"/></symbol><symbol id="i-bot" viewBox="0 0 24 24"><rect x="4" y="8" width="16" height="12" rx="4"/><path d="M12 8V5"/><circle cx="12" cy="3.8" r="1"/><circle cx="9" cy="14" r="1.2"/><circle cx="15" cy="14" r="1.2"/></symbol><symbol id="i-palette" viewBox="0 0 24 24"><path d="M12 3a9 9 0 100 18c1.3 0 2-.8 2-1.7 0-.9-.6-1.3-.6-2.1 0-.9.7-1.6 1.6-1.6H17a4 4 0 004-4c0-4.4-4-8.6-9-8.6z"/><circle cx="7.5" cy="11" r="1"/><circle cx="10" cy="7" r="1"/><circle cx="15" cy="7.5" r="1"/></symbol><symbol id="i-file" viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V8l-5-5z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h4"/></symbol><symbol id="i-pulse" viewBox="0 0 24 24"><path d="M3 12h4l2.5-6 4 12 2.5-6H21"/></symbol><symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/></symbol><symbol id="i-checkc" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l3 3 5-6"/></symbol><symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 11a8 8 0 00-14.5-4M4 4v4h4"/><path d="M4 13a8 8 0 0014.5 4M20 20v-4h-4"/></symbol><symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 7h16"/><path d="M9 7V4.5h6V7"/><path d="M6 7l1 13h10l1-13"/><path d="M10 11v5M14 11v5"/></symbol><symbol id="i-edit" viewBox="0 0 24 24"><path d="M4 20h4L19 9a2.8 2.8 0 00-4-4L4 16v4z"/><path d="M13.5 6.5l4 4"/></symbol><symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol><symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="3"/><path d="M8 11V8a4 4 0 018 0v3"/></symbol><symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 4l9 15.5H3L12 4z"/><path d="M12 10v4"/><path d="M12 17h.01"/></symbol><symbol id="i-receipt" viewBox="0 0 24 24"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2V3z"/><path d="M9 8h6M9 12h6"/></symbol><symbol id="i-scale" viewBox="0 0 24 24"><path d="M12 4v16M7 20h10"/><path d="M5 7h14"/><path d="M5 7l-2.5 6a3 3 0 005 0L5 7zM19 7l-2.5 6a3 3 0 005 0L19 7z"/></symbol><symbol id="i-clip" viewBox="0 0 24 24"><path d="M20 11l-8.5 8.5a5 5 0 01-7-7L13 4a3.5 3.5 0 015 5l-8.5 8.5a2 2 0 01-3-3L14 7.5"/></symbol><symbol id="i-book" viewBox="0 0 24 24"><path d="M5 4h11a3 3 0 013 3v13H8a3 3 0 01-3-3V4z"/><path d="M5 17a3 3 0 013-3h11"/></symbol><symbol id="i-link" viewBox="0 0 24 24"><path d="M10 14a4 4 0 005.7 0l3-3a4 4 0 00-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 00-5.7 0l-3 3a4 4 0 005.7 5.7l1-1"/></symbol><symbol id="i-clipboard" viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="17" rx="3"/><path d="M9 4V3h6v1M9 11h6M9 15h4"/></symbol><symbol id="i-next" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol><symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+<symbol id="i-expandir" viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></symbol><symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></symbol><symbol id="i-chevl" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></symbol><symbol id="i-chevr" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></symbol><symbol id="i-chevd" viewBox="0 0 24 24"><path d="M5 9l7 7 7-7"/></symbol><symbol id="i-chevu" viewBox="0 0 24 24"><path d="M5 15l7-7 7 7"/></symbol><symbol id="i-undo" viewBox="0 0 24 24"><path d="M9 14L4 9l5-5"/><path d="M4 9h10a6 6 0 010 12h-3"/></symbol><symbol id="i-redo" viewBox="0 0 24 24"><path d="M15 14l5-5-5-5"/><path d="M20 9H10a6 6 0 000 12h3"/></symbol></defs></svg>
+
+<header>
+    <div class="nav-month">
+        <div class="marca" aria-label="Gofre"><svg class="marca-svg" viewBox="0 -735 3185 765" role="img" aria-label="Gofre"><path fill="currentColor" d="M380 -715Q298 -715 234.2 -687.2Q170.5 -659.5 126 -610.5Q81.5 -561.5 58.2 -494.8Q35 -428 35 -350Q35 -272 58.2 -205.2Q81.5 -138.5 126 -89.5Q170.5 -40.5 234.2 -12.8Q298 15 380 15Q426.5 15 464.8 5Q503 -5 533.8 -23.8Q564.5 -42.5 588 -69.8Q611.5 -97 628.5 -132L621 -285.5H554Q550.5 -250.5 538.5 -221Q526.5 -191.5 506 -170Q485.5 -148.5 455.8 -136.5Q426 -124.5 387.5 -124.5Q340 -124.5 305.2 -144.2Q270.5 -164 248 -195.8Q225.5 -227.5 214.8 -268Q204 -308.5 204 -350Q204 -391.5 214.5 -432.2Q225 -473 246.8 -504.5Q268.5 -536 301.2 -555.8Q334 -575.5 379.5 -575.5Q411.5 -575.5 438.5 -567Q465.5 -558.5 486.2 -542.8Q507 -527 521.2 -504.2Q535.5 -481.5 542 -453H713.5Q704 -515 676 -563.5Q648 -612 604.5 -645.8Q561 -679.5 504 -697.2Q447 -715 380 -715ZM372.5 -379.5V-253H578.5L614 0H726.5V-379.5Z M2108 -715Q2058.5 -715 2024.2 -701.2Q1990 -687.5 1968.8 -664.5Q1947.5 -641.5 1938 -612.2Q1928.5 -583 1928.5 -553V-515H1853V-391H1928.5V0H2087.5V-391H2185.5V-515H2087.5V-540Q2087.5 -561 2101.2 -576.8Q2115 -592.5 2144 -592.5Q2160 -592.5 2171.5 -589.8Q2183 -587 2187 -585.5V-702Q2172 -707 2152.2 -711Q2132.5 -715 2108 -715Z M2539 -530Q2514.5 -530 2492.2 -522.5Q2470 -515 2451.2 -501.2Q2432.5 -487.5 2417.5 -467.5Q2402.5 -447.5 2393 -422L2378.5 -515H2240V0H2399.5V-205Q2399.5 -250.5 2410.5 -284.8Q2421.5 -319 2441 -341.8Q2460.5 -364.5 2486.5 -375.5Q2512.5 -386.5 2542 -386.5Q2549.5 -386.5 2556.2 -386Q2563 -385.5 2568.5 -385.5Q2574.5 -384.5 2580 -383.5V-527.5Q2575.5 -528.5 2569 -529Q2564 -529.5 2556.2 -529.8Q2548.5 -530 2539 -530Z M2886 -412Q2911.5 -412 2931.2 -405Q2951 -398 2965 -384.5Q2979 -371 2988.2 -353.2Q2997.5 -335.5 3002.5 -313.5H2772.5Q2776.5 -333 2785.5 -351Q2794.5 -369 2808.5 -382.5Q2822.5 -396 2841.5 -404Q2860.5 -412 2886 -412ZM2886 -530Q2826.5 -530 2776.2 -509.8Q2726 -489.5 2689.5 -453.2Q2653 -417 2632.5 -367Q2612 -317 2612 -258Q2612 -196 2633.2 -145.8Q2654.5 -95.5 2692.2 -59.8Q2730 -24 2781.5 -4.5Q2833 15 2893.5 15Q2937.5 15 2977.2 4.5Q3017 -6 3050.2 -27.5Q3083.5 -49 3109 -82Q3134.5 -115 3149 -160H3004Q2988.5 -128 2958.8 -113.8Q2929 -99.5 2892 -99.5Q2864.5 -99.5 2843.2 -108.5Q2822 -117.5 2806.5 -133Q2791 -148.5 2782 -169.5Q2773 -190.5 2770 -214H3153Q3158.5 -256.5 3154 -297.5Q3149.5 -338.5 3134 -375Q3104 -446.5 3039.8 -488.2Q2975.5 -530 2886 -530Z"/><rect x="863" y="-445" width="880" height="375" rx="188" fill="none" stroke="currentColor" stroke-width="170"/></svg></div>
+        <div class="nav-centro">
+            <button class="nav-btn" onclick="mudarMes(-1)"><svg class="ic ic-t"><use href="#i-chevl"/></svg>Anterior</button>
+            <div id="current-month-display">---</div>
+            <button class="nav-btn" onclick="mudarMes(1)">Próximo <svg class="ic"><use href="#i-chevr"/></svg></button>
+        </div>
+        <div class="busca-area">
+            <input type="search" id="buscaGlobal" class="busca-campo" placeholder="Buscar em todos os meses…" autocomplete="off" aria-label="Buscar lançamentos em todos os meses">
+            <div id="buscaResultados" class="busca-resultados hidden" role="listbox"></div>
+        </div>
+    </div>
+</header>
+
+<div class="app-layout" id="appLayout">
+    <div class="action-buttons">
+            <button class="btn-action" title="Dashboard" id="btnToggleDashboard" onclick="abrirPainel('dashboard')"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="9" rx="2"/><rect x="14" y="3" width="7" height="5" rx="2"/><rect x="14" y="12" width="7" height="9" rx="2"/><rect x="3" y="16" width="7" height="5" rx="2"/></svg>Dashboard</button>
+            <button class="btn-action" title="Relatórios" id="btnToggleRelatorios" onclick="abrirPainel('relatorios')"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 20h18"/><path d="M5 15l4-5 4 3 6-8"/><path d="M15 5h4v4"/></svg>Relatórios</button>
+            <button class="btn-action" title="Orçamento" id="btnToggleOrcamento" onclick="abrirPainel('orcamento')"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3v9l6.4 6.4"/></svg>Orçamento</button>
+            <button class="btn-action" title="Entradas" id="btnToggleEntradas" onclick="abrirPainel('entradas')"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="M7 11l5 5 5-5"/><path d="M4 20h16"/></svg>Entradas</button>
+            <button class="btn-action" title="Cartão de Crédito" id="btnToggleFaturas" onclick="abrirPainel('faturas')"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="5" width="19" height="14" rx="3"/><path d="M2.5 10h19"/><path d="M6.5 15h4"/></svg>Cartão de Crédito</button>
+            <button class="btn-action" title="Gastos Pontuais" id="btnTogglePontuais" onclick="abrirPainel('pontuais')"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2L4.5 13.5H11L10 22l8.5-11.5H13L13 2z"/></svg>Gastos Pontuais</button>
+            <button class="btn-action" title="Gastos Fixos" id="btnToggleFixos" onclick="abrirPainel('fixos')"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 3l3 3-3 3"/><path d="M4 11V9a3 3 0 013-3h13"/><path d="M7 21l-3-3 3-3"/><path d="M20 13v2a3 3 0 01-3 3H4"/></svg>Gastos Fixos</button>
+            <button class="btn-action" title="Configs" id="btnToggleConfigs" onclick="abrirPainel('configs')"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h10"/><path d="M18 7h2"/><circle cx="16" cy="7" r="2"/><path d="M4 17h2"/><path d="M10 17h10"/><circle cx="8" cy="17" r="2"/></svg>Configs</button>
+    </div>
+    <div class="main-content">
+
+        <div id="area-exibicao-entradas" class="hidden"></div>
+        <div id="area-exibicao-faturas" class="hidden"></div>
+        <div id="area-exibicao-pontuais" class="hidden"></div>
+        <div id="area-exibicao-fixos" class="hidden"></div>
+        <div id="area-exibicao-dashboard" class="hidden"></div>
+        <div id="area-exibicao-relatorios" class="hidden"></div>
+        <div id="area-exibicao-orcamento" class="hidden"></div>
+    </div>
+
+    <aside class="sidebar" id="rightSidebar">
+        <div id="view-pontuais" class="hidden">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
+                <h3 style="color:var(--primary);margin:0;font-size:16px;"><svg class="ic ic-t"><use href="#i-pontual"/></svg>Novo Gasto Pontual</h3>
+                <button onclick="fecharPainel()" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:18px;"><svg class="ic"><use href="#i-x"/></svg></button>
+            </div>
+            <div style="background:var(--surface-2);padding:18px;border-radius:12px;border:1px solid var(--border);display:flex;flex-direction:column;gap:12px;">
+                <div class="form-group" style="margin-bottom:0;">
+                    <label>DESCRI&#xC7;&#xC3;O</label>
+                    <input type="text" id="gp-desc" class="form-control" placeholder="Ex: Mercado, Farmácia...">
+                </div>
+                <div style="display:flex;gap:10px;">
+                    <div class="form-group" style="flex:2;margin-bottom:0;">
+                        <label>VALOR TOTAL R$</label>
+                        <input type="number" id="gp-valor" class="form-control" placeholder="0.00" oninput="gpRedistribuir()">
+                    </div>
+                    <div class="form-group" style="flex:1;margin-bottom:0;">
+                        <label>PARCELAS</label>
+                        <input type="number" id="gp-parcelas" class="form-control" value="1" min="1" oninput="gpRedistribuir()">
+                    </div>
+                </div>
+                <div class="form-group" style="margin-bottom:0;">
+                    <label>DATA DO PAGAMENTO</label>
+                    <input type="date" id="gp-data" class="form-control">
+                </div>
+                <div style="display:flex;gap:8px;align-items:flex-end;">
+                    <div class="form-group" style="flex:1;margin-bottom:0;">
+                        <label>CATEGORIA</label>
+                        <select id="gp-cat" class="form-control" onchange="gpAtualizarSub()"></select>
+                    </div>
+                    <div class="form-group" style="flex:1;margin-bottom:0;">
+                        <label>SUBCATEGORIA</label>
+                        <select id="gp-sub" class="form-control"></select>
+                    </div>
+                </div>
+                <div class="form-group" style="margin-bottom:0;">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                        <label style="margin-bottom:0;">DE QUEM &#xC9;?</label>
+                        <button onclick="gpAdicionarDono()" style="background:var(--accent);color:var(--on-accent);border:none;border-radius:6px;padding:4px 10px;font-size:11px;font-weight:bold;cursor:pointer;">+ Pessoa</button>
+                    </div>
+                    <div id="gp-donos" style="display:flex;flex-direction:column;gap:8px;"></div>
+                </div>
+                <button class="btn-blue" onclick="gpSalvar()">Salvar Gasto Pontual</button>
+            </div>
+        </div>
+
+        <div id="view-entradas" class="hidden">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
+                <h3 style="color:var(--primary);margin:0;font-size:16px;"><svg class="ic ic-t"><use href="#i-entrada"/></svg>Nova Entrada</h3>
+                <button onclick="fecharPainel()" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:18px;"><svg class="ic"><use href="#i-x"/></svg></button>
+            </div>
+
+            <!-- AVULSA -->
+            <div style="background:var(--w-04);padding:16px;border-radius:12px;border:1px solid var(--w-09);margin-bottom:14px;">
+                <div style="font-size:10px;font-weight:700;color:var(--success);letter-spacing:0.7px;margin-bottom:12px;"><svg class="ic ic-t"><use href="#i-pontual"/></svg>Entrada Pontual (este mês)</div>
+                <div class="form-group" style="margin-bottom:10px;">
+                    <label>DESCRIÇÃO</label>
+                    <input type="text" id="ent-av-desc" class="form-control" placeholder="Ex: Freelance, Venda...">
+                </div>
+                <div style="display:flex;gap:10px;">
+                    <div class="form-group" style="flex:2;margin-bottom:10px;">
+                        <label>VALOR R$</label>
+                        <input type="number" id="ent-av-valor" class="form-control" placeholder="0.00">
+                    </div>
+                    <div class="form-group" style="flex:1;margin-bottom:10px;">
+                        <label>DATA</label>
+                        <input type="date" id="ent-av-data" class="form-control">
+                    </div>
+                </div>
+                <button class="btn-blue" onclick="salvarEntradaAvulsa()" style="background:linear-gradient(135deg,color-mix(in srgb, var(--success) 85%, transparent),rgba(32,170,65,0.85));border-color:color-mix(in srgb, var(--success) 40%, transparent);">Registrar Entrada</button>
+            </div>
+
+            <!-- RECORRENTE -->
+            <div style="background:var(--w-04);padding:16px;border-radius:12px;border:1px solid var(--w-09);">
+                <div style="font-size:10px;font-weight:700;color:var(--info);letter-spacing:0.7px;margin-bottom:12px;"><svg class="ic ic-t"><use href="#i-fixos"/></svg>Entrada Recorrente (todo mês)</div>
+                <div class="form-group" style="margin-bottom:10px;">
+                    <label>DESCRIÇÃO</label>
+                    <input type="text" id="ent-rec-desc" class="form-control" placeholder="Ex: Salário, Aluguel recebido...">
+                </div>
+                <div style="display:flex;gap:10px;">
+                    <div class="form-group" style="flex:2;margin-bottom:10px;">
+                        <label>VALOR R$</label>
+                        <input type="number" id="ent-rec-valor" class="form-control" placeholder="0.00">
+                    </div>
+                    <div class="form-group" style="flex:1;margin-bottom:10px;">
+                        <label>DIA</label>
+                        <input type="number" id="ent-rec-dia" class="form-control" placeholder="05" min="1" max="31">
+                    </div>
+                </div>
+                <button class="btn-blue" onclick="salvarEntradaRecorrente()">Criar Regra Recorrente</button>
+            </div>
+
+            <!-- Lista de regras vigentes -->
+            <div style="margin-top:14px;border-top:1px solid rgba(255,255,255,0.07);padding-top:14px;">
+                <div style="font-size:10px;font-weight:700;color:var(--text-muted);letter-spacing:0.7px;margin-bottom:10px;">Regras Vigentes</div>
+                <div id="ent-lista-regras" style="display:flex;flex-direction:column;gap:8px;"></div>
+            </div>
+        </div>
+
+        <div id="view-orcamento" class="hidden">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
+                <h3 style="color:var(--primary);margin:0;font-size:16px;"><svg class="ic ic-t"><use href="#i-clipboard"/></svg>Orçamento</h3>
+                <button onclick="fecharPainel()" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:18px;"><svg class="ic"><use href="#i-x"/></svg></button>
+            </div>
+            <div style="background:var(--surface-2);padding:16px;border-radius:12px;border:1px solid var(--border);margin-bottom:16px;">
+                <p style="font-size:11px;color:var(--text-muted);margin:0 0 12px;">
+                    Defina o orçamento de cada categoria para o mês selecionado. O valor pode ser diferente a cada mês.
+                </p>
+                <div id="orc-lista-form" style="display:flex;flex-direction:column;gap:8px;"></div>
+                <button class="btn-blue" onclick="orcSalvar()" style="margin-top:14px;">Salvar Orçamentos</button>
+            </div>
+        </div>
+
+        <div id="view-fixos" class="hidden">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+                <h3 style="color:var(--primary);margin:0;font-size:16px;"><svg class="ic ic-t"><use href="#i-fixos"/></svg>Novo Gasto Fixo</h3>
+                <button onclick="fecharPainel()" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:18px;"><svg class="ic"><use href="#i-x"/></svg></button>
+            </div>
+            <div style="background:var(--w-06);padding:20px;border-radius:12px;border:1px solid var(--border);">
+                <p style="font-size:11px;color:var(--text-muted);margin-bottom:15px;">
+                    Gastos que repetem todo mês. O valor pode ser ajustado mês a mês sem perder a recorrência.
+                </p>
+                <div class="form-group">
+                    <label>DESCRIÇÃO</label>
+                    <input type="text" id="rgf-desc" class="form-control" placeholder="Ex: Aluguel, Luz, Academia...">
+                </div>
+                <div style="display:flex;gap:10px;">
+                    <div class="form-group" style="flex:2;">
+                        <label>VALOR PADRÃO R$</label>
+                        <input type="number" id="rgf-valor" class="form-control" placeholder="0.00" oninput="redistribuirIgualRGF()">
+                    </div>
+                    <div class="form-group" style="flex:1;">
+                        <label>DIA</label>
+                        <input type="number" id="rgf-dia" class="form-control" placeholder="01" min="1" max="31">
+                    </div>
+                </div>
+                <div style="display:flex;gap:10px;">
+                    <div class="form-group" style="flex:1;">
+                        <label>CATEGORIA</label>
+                        <select id="rgf-cat" class="form-control" onchange="atualizarSubcategoriasRGF()"></select>
+                    </div>
+                    <div class="form-group" style="flex:1;">
+                        <label>SUBCATEGORIA</label>
+                        <select id="rgf-subcat" class="form-control"></select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+                        <label style="margin-bottom:0;">DE QUEM É?</label>
+                        <button onclick="adicionarDonoRGF()" style="background:var(--accent);color:var(--on-accent)fff;border:none;border-radius:6px;padding:4px 8px;font-size:11px;font-weight:bold;cursor:pointer;">+ Pessoa</button>
+                    </div>
+                    <div id="container-donos-rgf" style="display:flex;flex-direction:column;gap:8px;"></div>
+                </div>
+                <button class="btn-blue" onclick="salvarRegraGastoFixo()">Cadastrar Gasto Fixo</button>
+            </div>
+        </div>
+        
+        <div id="view-configs" class="hidden">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h3 style="color: var(--primary); margin: 0;"><svg class="ic ic-t"><use href="#i-cfg"/></svg>Configurações</h3>
+                <button onclick="fecharPainel()" style="background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:18px;"><svg class="ic"><use href="#i-x"/></svg></button>
+            </div>
+            <div style="background: var(--w-06); padding: 20px; border-radius: 12px; border: 1px solid var(--border);">
+                <div style="display: flex; flex-direction: column; gap: 12px;">
+                    <button class="btn-action" title="Editar Cartões" style="padding: 15px; font-size: 13px; text-align: left; display: flex; align-items: center; justify-content: space-between; margin: 0;" onclick="abrirConfigCartoes()"><span><svg class="ic ic-t"><use href="#i-cartao"/></svg>Editar Cartões</span><span><svg class="ic"><use href="#i-chevr"/></svg></span></button>
+                    <button class="btn-action" title="Editar Pessoas" style="padding: 15px; font-size: 13px; text-align: left; display: flex; align-items: center; justify-content: space-between; margin: 0;" onclick="abrirConfigPessoas()"><span><svg class="ic ic-t"><use href="#i-users"/></svg>Editar Pessoas</span><span><svg class="ic"><use href="#i-chevr"/></svg></span></button>
+                    <button class="btn-action" title="Editar Categorias" style="padding: 15px; font-size: 13px; text-align: left; display: flex; align-items: center; justify-content: space-between; margin: 0;" onclick="abrirConfigCategorias()"><span><svg class="ic ic-t"><use href="#i-folder"/></svg>Editar Categorias</span><span><svg class="ic"><use href="#i-chevr"/></svg></span></button>
+                    <button class="btn-action" title="Lançar pelo Telegram" style="padding: 15px; font-size: 13px; text-align: left; display: flex; align-items: center; justify-content: space-between; margin: 0;" onclick="abrirTelegram()"><span><svg class="ic ic-t"><use href="#i-bot"/></svg>Lançar pelo Telegram</span><span><svg class="ic"><use href="#i-chevr"/></svg></span></button>
+                    <button class="btn-action" title="Aparência" style="padding: 15px; font-size: 13px; text-align: left; display: flex; align-items: center; justify-content: space-between; margin: 0;" onclick="abrirAparencia()"><span><svg class="ic ic-t"><use href="#i-palette"/></svg>Aparência</span><span><svg class="ic"><use href="#i-chevr"/></svg></span></button>
+                    <button class="btn-action" title="Gerar Extrato" style="padding: 15px; font-size: 13px; text-align: left; display: flex; align-items: center; justify-content: space-between; margin: 0;" onclick="abrirExtrato()"><span><svg class="ic ic-t"><use href="#i-file"/></svg>Gerar Extrato</span><span><svg class="ic"><use href="#i-chevr"/></svg></span></button>
+                    <button class="btn-action" title="Diagnóstico do Sistema" style="padding: 15px; font-size: 13px; text-align: left; display: flex; align-items: center; justify-content: space-between; margin: 0;" onclick="abrirDiagnostico()"><span><svg class="ic ic-t"><use href="#i-pulse"/></svg>Diagnóstico do Sistema</span><span><svg class="ic"><use href="#i-chevr"/></svg></span></button>
+                    <div style="text-align:center;font-size:11px;color:var(--text-faint);margin-top:6px;">Gofre {{ versao }}</div>
+                    <div id="avisoAtualizacao" class="hidden" style="text-align:center;margin-top:8px;"></div>
+                </div>
+            </div>
+        </div>
+
+
+        <div id="view-config-aparencia" class="hidden">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
+                <button onclick="Aparencia.voltar()" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:14px;font-weight:600;"><svg class="ic ic-t"><use href="#i-chevl"/></svg>Voltar</button>
+                <h3 style="color:var(--primary);margin:0;font-size:15px;"><svg class="ic ic-t"><use href="#i-palette"/></svg>Aparência</h3>
+                <span style="width:50px;"></span>
+            </div>
+            <div id="conteudoAparencia"></div>
+        </div>
+
+        <div id="view-config-telegram" class="hidden">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
+                <button onclick="Telegram.voltar()" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:14px;font-weight:600;"><svg class="ic ic-t"><use href="#i-chevl"/></svg>Voltar</button>
+                <h3 style="color:var(--primary);margin:0;font-size:15px;"><svg class="ic ic-t"><use href="#i-bot"/></svg>Telegram</h3>
+                <span style="width:50px;"></span>
+            </div>
+            <div id="conteudoTelegram"></div>
+        </div>
+
+        <div id="view-config-extrato" class="hidden">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
+                <button onclick="voltarParaConfigs()" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:14px;font-weight:600;"><svg class="ic ic-t"><use href="#i-chevl"/></svg>Voltar</button>
+                <h3 style="color:var(--primary);margin:0;font-size:15px;"><svg class="ic ic-t"><use href="#i-file"/></svg>Gerar Extrato</h3>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:14px;">
+                <!-- Pessoas -->
+                <div style="background:var(--w-04);border:1px solid var(--w-09);border-radius:12px;padding:14px;">
+                    <div style="font-size:10px;font-weight:700;color:var(--text-muted);letter-spacing:0.6px;margin-bottom:10px;"><svg class="ic ic-t"><use href="#i-users"/></svg>Pessoas</div>
+                    <div id="ext-pessoas" style="display:flex;flex-direction:column;gap:6px;"></div>
+                </div>
+                <!-- Meses -->
+                <div style="background:var(--w-04);border:1px solid var(--w-09);border-radius:12px;padding:14px;">
+                    <div style="font-size:10px;font-weight:700;color:var(--text-muted);letter-spacing:0.6px;margin-bottom:10px;"><svg class="ic ic-t"><use href="#i-calendar"/></svg>Meses</div>
+                    <div id="ext-meses" style="display:flex;flex-wrap:wrap;gap:6px;"></div>
+                </div>
+                <!-- Opções -->
+                <div style="background:var(--w-04);border:1px solid var(--w-09);border-radius:12px;padding:14px;">
+                    <div style="font-size:10px;font-weight:700;color:var(--text-muted);letter-spacing:0.6px;margin-bottom:10px;"><svg class="ic ic-t"><use href="#i-cfg"/></svg>Opções</div>
+                    <label style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text-main);cursor:pointer;">
+                        <input type="checkbox" id="ext-detalhar" checked style="width:16px;height:16px;cursor:pointer;">
+                        Detalhar itens por categoria
+                    </label>
+                </div>
+                <button class="btn-blue" onclick="gerarExtrato()"><svg class="ic ic-t"><use href="#i-file"/></svg>Gerar Extrato (PNG)</button>
+            </div>
+        </div>
+
+
+        <div id="view-config-diagnostico" class="hidden">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
+                <button onclick="voltarParaConfigs()" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:14px;font-weight:600;"><svg class="ic ic-t"><use href="#i-chevl"/></svg>Voltar</button>
+                <h3 style="color:var(--primary);margin:0;font-size:15px;"><svg class="ic ic-t"><use href="#i-pulse"/></svg>Diagnóstico</h3>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:14px;">
+                <div id="diag-status" style="background:color-mix(in srgb, var(--success) 10%, transparent);border:1px solid color-mix(in srgb, var(--success) 30%, transparent);border-radius:12px;padding:16px;text-align:center;">
+                    <div style="font-size:32px;margin-bottom:6px;"><svg class="ic"><use href="#i-checkc"/></svg></div>
+                    <div style="font-size:14px;font-weight:700;color:var(--success);">Sistema funcionando normalmente</div>
+                    <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">Nenhum erro detectado</div>
+                </div>
+                <div style="background:var(--w-04);border:1px solid var(--w-09);border-radius:12px;padding:14px;">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+                        <div style="font-size:10px;font-weight:700;color:var(--text-muted);letter-spacing:0.6px;"><svg class="ic ic-t"><use href="#i-clipboard"/></svg>Relatório de Funcionamento</div>
+                        <button onclick="copiarDiagnostico()" style="background:var(--accent);color:var(--on-accent);border:none;border-radius:7px;padding:5px 12px;font-size:11px;font-weight:700;cursor:pointer;"><svg class="ic ic-t"><use href="#i-clipboard"/></svg>Copiar</button>
+                    </div>
+                    <textarea id="diag-texto" readonly style="width:100%;min-height:220px;background:var(--k-30);border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:var(--text-main);font-family:monospace;font-size:11px;padding:10px;resize:vertical;box-sizing:border-box;"></textarea>
+                </div>
+                <div style="display:flex;gap:10px;">
+                    <button class="btn-blue" onclick="gerarDiagnostico()" style="flex:1;"><svg class="ic ic-t"><use href="#i-refresh"/></svg>Atualizar Relatório</button>
+                    <button onclick="limparLogErros()" style="flex:1;background:color-mix(in srgb, var(--danger) 12%, transparent);border:1px solid color-mix(in srgb, var(--danger) 28%, transparent);color:var(--danger);border-radius:10px;padding:12px;cursor:pointer;font-weight:600;font-size:13px;"><svg class="ic ic-t"><use href="#i-trash"/></svg>Limpar Erros</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="view-config-cartoes" class="hidden">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <button onclick="voltarParaConfigsCartoes()" style="background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:14px; font-weight: 600;"><svg class="ic ic-t"><use href="#i-chevl"/></svg>Voltar</button>
+                <h3 style="color: var(--primary); margin: 0; font-size: 15px;"><svg class="ic ic-t"><use href="#i-cartao"/></svg>Gerenciar Cartões</h3>
+            </div>
+            <div style="background: var(--w-06); padding: 20px; border-radius: 12px; border: 1px solid var(--border);" id="form-novo-cartao">
+                <div class="form-group">
+                    <label>NOME DO CARTÃO</label>
+                    <input type="text" id="card-nome" class="form-control" placeholder="Ex: Nubank, XP, Inter">
+                </div>
+                <div style="display:flex; gap:10px;">
+                    <div class="form-group" style="flex:1;"><label>VENCIMENTO (DIA)</label><input type="number" id="card-venc" class="form-control" placeholder="22" min="1" max="31"></div>
+                    <div class="form-group" style="flex:1;"><label>FECHAMENTO (DIA)</label><input type="number" id="card-fechamento" class="form-control" placeholder="Ex: 3" min="1" max="31"></div>
+                    <div class="form-group" style="flex:1;"><label>COR</label><input type="color" id="card-cor" class="form-control" style="height:45px; padding:5px;" value="#8ab4f8"></div>
+                </div>
+                <p style="font-size:10px;color:var(--text-muted);margin:-6px 0 12px;">
+                    Compras feitas <strong>a partir</strong> do dia de fechamento entram na fatura do mês seguinte.
+                    Ex: fechamento dia 3 → compra em 03/07 cai na fatura de agosto (período 03/07 a 03/08).
+                </p>
+                <button class="btn-blue" onclick="salvarNovoCartao()">Cadastrar Cartão</button>
+            </div>
+            <div style="background: var(--surface-2); padding: 20px; border-radius: 12px; border: 1px solid var(--primary); margin-top: 15px;" id="form-editar-cartao" class="hidden">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    <h4 style="color: var(--primary); margin: 0; font-size: 13px;"><svg class="ic ic-t"><use href="#i-edit"/></svg>EDITAR CARTÃO</h4>
+                    <button onclick="fecharEdicaoCartao()" style="background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:16px;"><svg class="ic"><use href="#i-x"/></svg></button>
+                </div>
+                <input type="hidden" id="edit-card-id">
+                <div class="form-group">
+                    <label>NOME DO CARTÃO</label>
+                    <input type="text" id="edit-card-nome" class="form-control">
+                </div>
+                <div style="display:flex; gap:10px;">
+                    <div class="form-group" style="flex:1;"><label>VENCIMENTO (DIA)</label><input type="number" id="edit-card-venc" class="form-control" min="1" max="31"></div>
+                    <div class="form-group" style="flex:1;"><label>FECHAMENTO (DIA)</label><input type="number" id="edit-card-fechamento" class="form-control" placeholder="Ex: 3" min="1" max="31"></div>
+                    <div class="form-group" style="flex:1;"><label>COR</label><input type="color" id="edit-card-cor" class="form-control" style="height:45px; padding:5px;"></div>
+                </div>
+                <div style="display:flex; gap:10px; margin-top: 10px;">
+                    <button class="btn-blue" style="flex: 2;" onclick="salvarEdicaoCartao()">Salvar Alterações</button>
+                    <button class="btn-action" title="Excluir" style="flex: 1; background: var(--danger-bg); color: white; border: none;" onclick="deletarCartaoEmEdicao()">Excluir</button>
+                </div>
+            </div>
+            <div style="margin-top: 30px; border-top: 1px solid var(--border); padding-top: 20px;">
+                <h5 style="font-size: 11px; color: var(--text-muted); margin-bottom: 15px;">MEUS CARTÕES (Clique para editar)</h5>
+                <div id="lista-cartoes-cadastrados"></div>
+            </div>
+        </div>
+
+        <div id="view-config-pessoas" class="hidden">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <button onclick="voltarParaConfigsPessoas()" style="background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:14px; font-weight: 600;"><svg class="ic ic-t"><use href="#i-chevl"/></svg>Voltar</button>
+                <h3 style="color: var(--primary); margin: 0; font-size: 15px;"><svg class="ic ic-t"><use href="#i-users"/></svg>Gerenciar Pessoas</h3>
+            </div>
+            <div style="background: var(--w-06); padding: 20px; border-radius: 12px; border: 1px solid var(--border); margin-bottom: 15px;">
+                <h5 style="font-size: 11px; color: var(--text-muted); margin-bottom: 10px;">PESSOA PRINCIPAL (VOCÊ)</h5>
+                <div style="display:flex; gap:10px;">
+                    <input type="text" id="nome-pessoa-principal" class="form-control" placeholder="Seu nome">
+                    <button class="btn-blue" style="width: auto; padding: 0 15px;" onclick="salvarPessoaPrincipal()">Salvar</button>
+                </div>
+            </div>
+            <div style="background: var(--w-06); padding: 20px; border-radius: 12px; border: 1px solid var(--border);" id="form-nova-pessoa">
+                <h5 style="font-size: 11px; color: var(--text-muted); margin-bottom: 10px;">ADICIONAR PESSOA SECUNDÁRIA</h5>
+                <div style="display:flex; gap:10px;">
+                    <input type="text" id="nome-nova-pessoa" class="form-control" placeholder="Ex: Namorado, Amigo, etc.">
+                    <button class="btn-blue" style="width: auto; padding: 0 15px;" onclick="adicionarPessoaSecundaria()">Adicionar</button>
+                </div>
+            </div>
+            <div style="background: var(--surface-2); padding: 20px; border-radius: 12px; border: 1px solid var(--primary); margin-top: 15px;" id="form-editar-pessoa" class="hidden">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    <h4 style="color: var(--primary); margin: 0; font-size: 13px;"><svg class="ic ic-t"><use href="#i-edit"/></svg>EDITAR PESSOA</h4>
+                    <button onclick="fecharEdicaoPessoa()" style="background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:16px;"><svg class="ic"><use href="#i-x"/></svg></button>
+                </div>
+                <input type="hidden" id="edit-pessoa-id">
+                <div style="display:flex; gap:10px;">
+                    <input type="text" id="edit-pessoa-nome" class="form-control" placeholder="Novo nome">
+                    <button class="btn-blue" style="width: auto; padding: 0 15px;" onclick="salvarEdicaoPessoa()">Atualizar</button>
+                </div>
+            </div>
+            <div style="margin-top: 20px; border-top: 1px solid var(--border); padding-top: 15px;">
+                <h5 style="font-size: 11px; color: var(--text-muted); margin-bottom: 15px;">PESSOAS CADASTRADAS (Clique para editar)</h5>
+                <div id="lista-pessoas-cadastradas"></div>
+            </div>
+        </div>
+
+        <div id="view-config-categorias" class="hidden">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <button onclick="voltarParaConfigsCategorias()" style="background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:14px; font-weight: 600;"><svg class="ic ic-t"><use href="#i-chevl"/></svg>Voltar</button>
+                <h3 style="color: var(--primary); margin: 0; font-size: 15px;"><svg class="ic ic-t"><use href="#i-folder"/></svg>Gerenciar Categorias</h3>
+            </div>
+
+            <div style="background: var(--w-06); padding: 20px; border-radius: 12px; border: 1px solid var(--border);" id="form-nova-categoria">
+                <h5 style="font-size: 11px; color: var(--text-muted); margin-bottom: 10px;">ADICIONAR NOVA CATEGORIA</h5>
+                <div style="display:flex; gap:10px;">
+                    <input type="text" id="nome-nova-categoria" class="form-control" placeholder="Ex: Lazer, Saúde...">
+                    <button class="btn-blue" style="width: auto; padding: 0 15px;" onclick="adicionarCategoria()">Adicionar</button>
+                </div>
+            </div>
+
+            <div style="background: var(--surface-2); padding: 20px; border-radius: 12px; border: 1px solid var(--primary); margin-top: 15px;" id="form-editar-categoria" class="hidden">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    <h4 style="color: var(--primary); margin: 0; font-size: 13px;"><svg class="ic ic-t"><use href="#i-edit"/></svg>EDITAR CATEGORIA</h4>
+                    <button onclick="fecharEdicaoCategoria()" style="background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:16px;"><svg class="ic"><use href="#i-x"/></svg></button>
+                </div>
+                <input type="hidden" id="edit-cat-id">
+                <div style="display:flex; gap:10px; margin-bottom: 20px;">
+                    <input type="text" id="edit-cat-nome" class="form-control" placeholder="Nome da Categoria">
+                    <button class="btn-blue" style="width: auto; padding: 0 15px;" onclick="salvarEdicaoCategoria()">Atualizar</button>
+                </div>
+
+                <div style="border-top: 1px solid var(--border); padding-top: 15px;">
+                    <h5 style="font-size: 11px; color: var(--text-muted); margin-bottom: 10px;">SUBCATEGORIAS DESTA CATEGORIA</h5>
+                    <div style="display:flex; gap:10px; margin-bottom: 15px;">
+                        <input type="text" id="nome-nova-subcat" class="form-control" placeholder="Ex: Farmácia, Consulta...">
+                        <button class="btn-blue" style="width: auto; padding: 0 15px;" onclick="adicionarSubcategoria()">+ Sub</button>
+                    </div>
+                    <div id="lista-subcategorias-edit"></div>
+                </div>
+                
+                <div style="margin-top: 25px; text-align: right;">
+                    <button class="btn-action" title="Excluir Categoria Inteira" style="background: var(--danger-bg); color: white; border: none; padding: 8px 15px;" onclick="deletarCategoriaInteira()"><svg class="ic ic-t"><use href="#i-trash"/></svg>Excluir Categoria Inteira</button>
+                </div>
+            </div>
+
+            <div style="margin-top: 20px; border-top: 1px solid var(--border); padding-top: 15px;">
+                <h5 style="font-size: 11px; color: var(--text-muted); margin-bottom: 15px;">CATEGORIAS CADASTRADAS (Clique para editar)</h5>
+                <div id="lista-categorias-cadastradas"></div>
+            </div>
+        </div>
+
+        </aside>
+</div>
+
+<div class="hist-btns">
+    <button id="btnDesfazer" class="hist-btn" onclick="desfazer()" disabled title="Nada para desfazer"><svg class="ic ic-t"><use href="#i-undo"/></svg>Desfazer</button>
+    <button id="btnRefazer" class="hist-btn" onclick="refazer()" disabled title="Nada para refazer">Refazer <svg class="ic"><use href="#i-redo"/></svg></button>
+</div>
+
+<button class="fab-button" onclick="abrirModalLancamento()">+</button>
+
+<div id="modal-lancamento" class="modal-overlay">
+    <div class="modal-content" style="max-width:540px; position:relative;">
+        <input type="hidden" id="edit-fatura-id">
+
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px;">
+            <h3 style="color:var(--primary); margin:0;" id="modal-titulo"><svg class="ic ic-t"><use href="#i-plus"/></svg>Novo Lançamento</h3>
+            <button onclick="fecharModalLancamento()" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:18px;"><svg class="ic"><use href="#i-x"/></svg></button>
+        </div>
+
+        <div style="background:var(--w-06); padding:18px; border-radius:12px; border:1px solid var(--border); display:flex; flex-direction:column; gap:12px;">
+
+            <!-- Linha 1: Destino + Cartão -->
+            <div style="display:flex; gap:10px;">
+                <div class="form-group" style="flex:1; margin-bottom:0;">
+                    <label>ONDE LANÇAR?</label>
+                    <select id="novo-lanc-destino" class="form-control" onchange="alternarCampoCartao()">
+                        <option value="cartao">Cartão de Crédito</option>
+                        <option value="pontual">Gasto Pontual (Dinheiro/Pix)</option>
+                    </select>
+                </div>
+                <div class="form-group" style="flex:1; margin-bottom:0;" id="div-qual-cartao">
+                    <label>QUAL CARTÃO?</label>
+                    <select id="novo-lanc-cartao-id" class="form-control"></select>
+                </div>
+            </div>
+
+            <!-- Linha 2: Descrição + Data -->
+            <div style="display:flex; gap:10px;">
+                <div class="form-group" style="flex:2; margin-bottom:0;">
+                    <label>DESCRIÇÃO DA COMPRA</label>
+                    <input type="text" id="novo-lanc-desc" class="form-control" placeholder="Ex: Supermercado, Netflix...">
+                </div>
+                <div class="form-group" style="flex:1; margin-bottom:0;">
+                    <label>DATA</label>
+                    <input type="date" id="novo-lanc-data" class="form-control">
+                </div>
+            </div>
+
+            <!-- Linha 3: Valor + Parcelas -->
+            <div style="display:flex; gap:10px;">
+                <div class="form-group" style="flex:2; margin-bottom:0;">
+                    <label>VALOR TOTAL (R$)</label>
+                    <input type="number" step="0.01" id="novo-lanc-valor" class="form-control" placeholder="0.00" oninput="onValorOuParcelasChange()">
+                </div>
+                <div class="form-group" style="flex:1; margin-bottom:0;">
+                    <label>PARCELAS</label>
+                    <input type="number" id="novo-lanc-parcelas" class="form-control" value="1" min="1" oninput="onValorOuParcelasChange()">
+                </div>
+            </div>
+
+            <!-- Linha 4: Categoria + Sub + botão + -->
+            <div style="display:flex; gap:10px; align-items:flex-end;">
+                <div class="form-group" style="flex:1; margin-bottom:0;">
+                    <label>CATEGORIA</label>
+                    <select id="novo-lanc-cat" class="form-control" onchange="atualizarSubcategoriasModal()"></select>
+                </div>
+                <div class="form-group" style="flex:1; margin-bottom:0;">
+                    <label>SUBCATEGORIA</label>
+                    <select id="novo-lanc-subcat" class="form-control"></select>
+                </div>
+                <button type="button" onclick="abrirMiniModalCategoria(null)"
+                    title="Gerenciar categorias"
+                    style="height:44px;padding:0 13px;background:var(--accent);color:var(--on-accent)fff;border:none;border-radius:8px;font-size:20px;font-weight:bold;cursor:pointer;flex-shrink:0;">+</button>
+            </div>
+
+            <!-- Dívida fixa paga pelo cartão (só aparece quando o destino é cartão) -->
+            <label id="div-fixo-cartao" style="display:flex; gap:10px; align-items:flex-start; cursor:pointer; background:color-mix(in srgb, var(--accent) 8%, transparent); border:1px solid color-mix(in srgb, var(--accent) 35%, transparent); border-radius:10px; padding:10px 12px;">
+                <input type="checkbox" id="novo-lanc-fixo" style="width:18px;height:18px;margin-top:2px;flex:none;">
+                <span style="font-size:12px; line-height:1.4;"><strong><svg class="ic ic-t"><use href="#i-fixos"/></svg>É uma dívida fixa</strong> (academia, internet, telefone…)<br>
+                <span style="color:var(--text-muted);">Aparece também na aba Gastos Fixos, mas <u>não é somada duas vezes</u>: continua contando só na fatura do cartão.</span></span>
+            </label>
+
+            <!-- Linha 5: Dono da dívida -->
+            <div class="form-group" style="margin-bottom:0;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                    <label style="margin-bottom:0;">DE QUEM É A DÍVIDA?</label>
+                    <button onclick="adicionarDonoDivida()" style="background:var(--accent);color:var(--on-accent)fff;border:none;border-radius:6px;padding:4px 10px;font-size:11px;font-weight:bold;cursor:pointer;">+ Pessoa</button>
+                </div>
+                <div id="container-donos-divida" style="display:flex; flex-direction:column; gap:8px;"></div>
+            </div>
+
+            <!-- Mini-modal de categoria (sobreposto, centralizado no modal) -->
+            <div id="mini-modal-cat" style="display:none;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+                background:var(--card-bg);border:1px solid var(--border);border-radius:14px;padding:20px;
+                width:92%;max-width:360px;z-index:2000;box-shadow:0 8px 32px rgba(0,0,0,0.9);flex-direction:column;gap:12px;">
+                <div style="display:flex;justify-content:space-between;align-items:center;">
+                    <span id="mini-modal-titulo" style="font-size:14px;font-weight:700;color:var(--primary);"><svg class="ic ic-t"><use href="#i-folder"/></svg>Categoria</span>
+                    <button onclick="fecharMiniModalCategoria()" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:18px;"><svg class="ic"><use href="#i-x"/></svg></button>
+                </div>
+                <!-- Seletor de ação -->
+                <div style="display:flex;gap:6px;">
+                    <button id="mini-tab-nova" onclick="miniModalAba('nova')" style="flex:1;padding:7px;border-radius:7px;border:none;font-size:11px;font-weight:700;cursor:pointer;background:var(--accent);color:var(--on-accent)fff;">+ Nova</button>
+                    <button id="mini-tab-editar" onclick="miniModalAba('editar')" style="flex:1;padding:7px;border-radius:7px;border:1px solid var(--border);font-size:11px;font-weight:700;cursor:pointer;background:var(--w-06);color:var(--text-muted);"><svg class="ic ic-t"><use href="#i-edit"/></svg>Editar</button>
+                </div>
+                <!-- Aba: Nova -->
+                <div id="mini-aba-nova" style="display:flex;flex-direction:column;gap:10px;">
+                    <div class="form-group" style="margin-bottom:0;">
+                        <label>CATEGORIA <span style="color:var(--text-muted);font-weight:400;">(nova ou existente)</span></label>
+                        <input type="text" id="mini-cat-nome" class="form-control" placeholder="Ex: Transporte">
+                    </div>
+                    <div class="form-group" style="margin-bottom:0;">
+                        <label>SUBCATEGORIA <span style="color:var(--text-muted);font-weight:400;">(opcional)</span></label>
+                        <input type="text" id="mini-subcat-nome" class="form-control" placeholder="Ex: Uber, Gasolina...">
+                    </div>
+                    <p style="font-size:10px;color:var(--text-muted);margin:0;">Se a categoria já existir, a sub será adicionada a ela.</p>
+                    <button class="btn-blue" onclick="salvarMiniCategoria()">Salvar e Selecionar</button>
+                </div>
+                <!-- Aba: Editar -->
+                <div id="mini-aba-editar" style="display:none;flex-direction:column;gap:10px;">
+                    <div class="form-group" style="margin-bottom:0;">
+                        <label>SELECIONAR CATEGORIA</label>
+                        <select id="mini-edit-cat-sel" class="form-control" onchange="miniCarregarSubcats()"></select>
+                    </div>
+                    <div style="display:flex;gap:8px;">
+                        <input type="text" id="mini-edit-cat-nome" class="form-control" placeholder="Novo nome da categoria" style="flex:1;">
+                        <button onclick="miniSalvarNomeCategoria()" style="background:var(--accent);color:var(--on-accent)fff;border:none;border-radius:8px;padding:0 12px;cursor:pointer;font-size:12px;font-weight:700;flex-shrink:0;">Salvar</button>
+                    </div>
+                    <div style="border-top:1px solid var(--border);padding-top:10px;">
+                        <label style="font-size:10px;color:var(--text-muted);font-weight:700;">Subcategorias</label>
+                        <div id="mini-lista-subcats" style="margin-top:6px;display:flex;flex-direction:column;gap:5px;max-height:130px;overflow-y:auto;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn-blue" onclick="processarNovoLancamento()" id="btn-salvar-lancamento" style="margin-top:4px;">Salvar Lançamento</button>
+        </div>
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+<script src="{{ url_for('static', filename='js/aparencia.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/busca.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/relatorios.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/telegram.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/importacao.js') }}"></script>
+</body>
+</html>

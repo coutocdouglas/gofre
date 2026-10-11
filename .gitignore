@@ -1,0 +1,24 @@
+# Dados pessoais: NUNCA vão para o git
+memoria/
+*.db
+*.db-journal
+*.migrado
+senhas_pdf.json
+aparencia.json
+config.json
+*.pdf
+*.log
+
+# Python / testes
+__pycache__/
+*.pyc
+.venv/
+venv/
+.venv_build/
+.pytest_cache/
+node_modules/
+
+# Programa gerado (pode ser recriado a qualquer momento)
+build/
+dist/
+instalador/

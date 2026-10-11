@@ -1,0 +1,22 @@
+name: Testes
+on:
+  push:
+    branches: [main]
+  pull_request:
+jobs:
+  testes:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - run: pip install -r requirements-dev.txt
+      - run: python -m pytest -q
+      - name: Testes do JavaScript
+        shell: bash
+        run: for f in tests/*.test.js; do node "$f" || exit 1; done
