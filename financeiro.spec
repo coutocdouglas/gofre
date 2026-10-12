@@ -15,6 +15,7 @@ for pacote in ('pdfplumber', 'pdfminer', 'pypdfium2', 'pypdfium2_raw', 'cryptogr
     hidden += h
 hidden += collect_submodules('importacao')
 hidden += collect_submodules('telegram_bot')
+hidden += collect_submodules('assistente_ia')
 
 a = Analysis(
     ['main.py'],

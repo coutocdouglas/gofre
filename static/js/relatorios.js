@@ -219,7 +219,7 @@
 
     function abas() {
         const b = (id, rot) => '<button class="btn-action' + (estado.aba === id ? ' active' : '') + '" style="margin:0" onclick="Relatorios.aba(\'' + id + '\')">' + rot + '</button>';
-        return '<div style="display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap">' + b('comparar', '<svg class="ic ic-t"><use href="#i-relat"/></svg>Comparar meses') + b('fechar', '<svg class="ic ic-t"><use href="#i-lock"/></svg>Fechar mês') + '</div>';
+        return '<div style="display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap">' + b('comparar', '<svg class="ic ic-t"><use href="#i-relat"/></svg>Comparar meses') + b('fechar', '<svg class="ic ic-t"><use href="#i-lock"/></svg>Fechar mês') + b('ia', '<svg class="ic ic-t"><use href="#i-sparkle"/></svg>Análise com IA') + '</div>';
     }
     function cabecalho(sub) {
         return '<div style="margin-bottom:18px;border-bottom:1px solid var(--w-08);padding-bottom:14px;">' +
@@ -382,6 +382,7 @@
             if (!area) return;
             area.classList.remove('hidden');
             const d = dados();
+            if (estado.aba === 'ia' && global.IA) { area.innerHTML = cabecalho('Pergunte e receba análises sobre os seus números') + abas(); const alvo = document.createElement('div'); area.appendChild(alvo); global.IA.renderizar(alvo); return; }
             area.innerHTML = estado.aba === 'fechar' ? telaFechar(d) : telaComparar(d);
         },
         aba(a) { estado.aba = a; this.renderizar(); },

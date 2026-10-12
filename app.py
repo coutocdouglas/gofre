@@ -931,6 +931,14 @@ app.register_blueprint(criar_blueprint(conectar, pasta_config, pasta_programa, l
 
 
 # ============================================================
+# ANÁLISES COM IA (aba Relatórios)
+# ============================================================
+from assistente_ia.rotas import criar_blueprint as _criar_bp_ia  # noqa: E402
+
+app.register_blueprint(_criar_bp_ia(pasta_config))
+
+
+# ============================================================
 # BOT DO TELEGRAM (lançar gastos de cartão pelo celular)
 # ============================================================
 from telegram_bot import dados as _tg_dados  # noqa: E402
@@ -971,7 +979,7 @@ def iniciar_bot_telegram():
 # ============================================================
 # Aparência (tema, cor de destaque, tamanho). Fica em arquivo próprio ao lado da pasta 'memoria',
 # não no banco: assim não entra no histórico de desfazer e não mexe nos seus dados.
-APP_VERSAO = "2.5.8"
+APP_VERSAO = "2.6.0"
 PALETAS_ESCURAS = ("concreto", "gofre", "grafite", "meianoite", "floresta", "vinho", "ardosia", "preto")
 PALETAS_CLARAS = ("claro", "areia", "mar", "menta")
 APARENCIA_PADRAO = {"paleta": "concreto", "destaque": "bordo", "densidade": "normal", "status": "paleta"}

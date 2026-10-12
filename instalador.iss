@@ -1,6 +1,6 @@
 ; Receita do instalador (Inno Setup 6). Usada pelo construir_instalador.bat
 #define NomeApp "Gofre"
-#define Versao "2.5.8"
+#define Versao "2.6.0"
 
 [Setup]
 AppId={{B7C5E8A2-3F4D-4E6B-9A1C-5D2F8E7A4B90}
