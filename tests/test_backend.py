@@ -306,3 +306,17 @@ def test_atualizacao_compara_versoes(client, appmod, monkeypatch):
     assert d["disponivel"] is True and d["nova"] == "99.0.0"
     assert client.post("/api/abrir_pagina_projeto", json={"url": "https://evil.com/"}).status_code == 400
     appmod.REPO_GITHUB = ""
+
+
+def test_atualizacao_automatica_so_aceita_instalador_do_repositorio(client, appmod):
+    appmod.REPO_GITHUB = "fulano/gofre"
+    ok = "https://github.com/fulano/gofre/releases/download/v2.6.0/Instalar_Financeiro_2.6.0.exe"
+    assert appmod._url_instalador_valida(ok)
+    for ruim in ("https://evil.com/Instalar_Financeiro_2.6.0.exe",
+                 "https://github.com/outro/gofre/releases/download/v2.6.0/Instalar_Financeiro_2.6.0.exe",
+                 "https://github.com/fulano/gofre/releases/download/v2.6.0/malware.exe",
+                 "http://github.com/fulano/gofre/releases/download/v2.6.0/Instalar_Financeiro_2.6.0.exe"):
+        assert not appmod._url_instalador_valida(ruim)
+    assert client.post("/api/atualizar_agora").status_code == 400      # fora do programa instalado não instala nada
+    assert client.get("/api/atualizar_estado").get_json()["fase"] == "parado"
+    appmod.REPO_GITHUB = ""

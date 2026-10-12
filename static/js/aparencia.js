@@ -109,11 +109,35 @@ function abrirAparencia() { Aparencia.abrir(); }
 
 // Aviso de versão nova (só aparece se o projeto estiver ligado a um repositório do GitHub)
 (function () {
+    const post = (u, c) => fetch(u, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(c || {}) });
+    function acompanhar(el) {
+        const t = setInterval(() => fetch('/api/atualizar_estado').then(r => r.json()).then(e => {
+            if (e.fase === 'baixando') el.textContent = 'Baixando a atualização… ' + e.pct + '%';
+            else if (e.fase === 'instalando') { el.textContent = 'Instalando… o Gofre vai fechar e abrir de novo sozinho.'; clearInterval(t); }
+            else if (e.fase === 'erro') { el.textContent = e.erro; clearInterval(t); }
+        }).catch(() => { clearInterval(t); }), 800);
+    }
+    function montar(el, d, compacto) {
+        el.innerHTML = '<button type="button" class="ap-restaurar" id="btnNovaVersao' + (compacto ? 'T' : '') + '"></button>';
+        const b = el.firstChild;
+        if (d.pode_instalar) {
+            b.textContent = 'Nova versão ' + d.nova + ' — Atualizar agora';
+            b.onclick = () => { b.disabled = true; post('/api/atualizar_agora').then(() => acompanhar(el)); el.textContent = 'Preparando…'; };
+        } else {
+            b.textContent = 'Nova versão ' + d.nova + ' disponível — ver';
+            b.onclick = () => post('/api/abrir_pagina_projeto', { url: d.url });
+        }
+    }
     fetch('/api/atualizacao').then(r => r.json()).then(d => {
+        if (!d || !d.disponivel) return;
         const el = document.getElementById('avisoAtualizacao');
-        if (!el || !d || !d.disponivel) return;
-        el.classList.remove('hidden');
-        el.innerHTML = '<button type="button" class="ap-restaurar" id="btnNovaVersao">Nova versão ' + d.nova + ' disponível — ver</button>';
-        document.getElementById('btnNovaVersao').onclick = () => fetch('/api/abrir_pagina_projeto', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ url: d.url }) });
+        if (el) { el.classList.remove('hidden'); montar(el, d, false); }
+        const t = document.createElement('div');
+        t.className = 'toast-atualizacao';
+        t.innerHTML = '<span class="ta-msg"></span><button type="button" class="ta-fechar" title="Depois" aria-label="Fechar">×</button>';
+        document.body.appendChild(t);
+        const msg = t.querySelector('.ta-msg');
+        montar(msg, d, true);
+        t.querySelector('.ta-fechar').onclick = () => t.remove();
     }).catch(() => {});
 })();

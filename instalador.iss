@@ -1,6 +1,6 @@
 ; Receita do instalador (Inno Setup 6). Usada pelo construir_instalador.bat
 #define NomeApp "Gofre"
-#define Versao "2.5.7"
+#define Versao "2.5.8"
 
 [Setup]
 AppId={{B7C5E8A2-3F4D-4E6B-9A1C-5D2F8E7A4B90}
@@ -43,10 +43,17 @@ Root: HKCU; Subkey: "Software\Microsoft\Windows\CurrentVersion\Run"; ValueType: 
 
 [Run]
 Filename: "{app}\Financeiro.exe"; Description: "Abrir o Gofre agora"; Flags: nowait postinstall skipifsilent
+Filename: "{app}\Financeiro.exe"; Flags: nowait; Check: ReabrirPedido
 
 ; Importante: os DADOS ficam em %APPDATA%\Financeiro e NAO sao apagados ao desinstalar ou atualizar.
 
 [Code]
+{ O proprio Gofre chama o instalador com /reabrir=1 ao se atualizar sozinho: no fim, ele abre de novo. }
+function ReabrirPedido: Boolean;
+begin
+  Result := ExpandConstant('{param:reabrir|0}') = '1';
+end;
+
 { Ao instalar por cima de uma versao aberta (ela fica na bandeja do relogio), fecha o programa antes de trocar os arquivos.
   Os dados nao sao afetados: ficam em outra pasta e o banco grava tudo de forma segura. }
 function PrepareToInstall(var NeedsRestart: Boolean): String;

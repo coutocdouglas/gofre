@@ -1,37 +1,56 @@
-# Cria o instalador do Windows sozinho e publica na aba "Releases".
-# Para lançar uma versão nova: git tag v2.6.0 && git push --tags   (ou use o botão "Run workflow")
+# Publica sozinho: a cada envio para o "main", se o número da versão (em instalador.iss) ainda não foi lançado,
+# roda os testes, monta o instalador do Windows e cria a versão em "Releases".
+# O Gofre instalado consulta essa página e oferece "Atualizar agora".
 name: Publicar versão
 on:
   push:
-    tags: ["v*"]
+    branches: [main]
   workflow_dispatch:
 permissions:
   contents: write
+concurrency:
+  group: publicar
+  cancel-in-progress: false
 jobs:
-  instalador:
+  publicar:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Versão
+        id: v
+        shell: bash
+        run: |
+          ver=$(sed -n 's/^#define Versao "\(.*\)"/\1/p' instalador.iss | tr -d '\r')
+          echo "ver=$ver" >> "$GITHUB_OUTPUT"
+          if git ls-remote --tags origin "refs/tags/v$ver" | grep -q .; then echo "novo=0" >> "$GITHUB_OUTPUT"; else echo "novo=1" >> "$GITHUB_OUTPUT"; fi
+          echo "Versão $ver"
       - uses: actions/setup-python@v5
+        if: steps.v.outputs.novo == '1' || github.event_name == 'workflow_dispatch'
         with:
           python-version: "3.12"
           cache: pip
-      - run: pip install -r requirements-desktop.txt pyinstaller
-      - run: python -m PyInstaller --noconfirm --clean financeiro.spec
+      - name: Componentes e testes
+        if: steps.v.outputs.novo == '1' || github.event_name == 'workflow_dispatch'
+        shell: bash
+        run: |
+          pip install -r requirements-desktop.txt -r requirements-dev.txt pyinstaller
+          python -m pytest -q -p no:cacheprovider
+      - name: Montar o programa
+        if: steps.v.outputs.novo == '1' || github.event_name == 'workflow_dispatch'
+        run: python -m PyInstaller --noconfirm --clean financeiro.spec
       - name: Inno Setup
+        if: steps.v.outputs.novo == '1' || github.event_name == 'workflow_dispatch'
         run: choco install innosetup -y --no-progress
       - name: Gerar instalador
+        if: steps.v.outputs.novo == '1' || github.event_name == 'workflow_dispatch'
         shell: cmd
         run: '"%ProgramFiles(x86)%\Inno Setup 6\ISCC.exe" instalador.iss'
-      - name: Publicar
-        if: startsWith(github.ref, 'refs/tags/')
+      - name: Publicar em Releases
+        if: steps.v.outputs.novo == '1'
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: v${{ steps.v.outputs.ver }}
+          target_commitish: ${{ github.sha }}
+          name: Gofre ${{ steps.v.outputs.ver }}
           files: instalador/Instalar_Financeiro_*.exe
           generate_release_notes: true
-      - name: Guardar instalador (execução manual)
-        if: ${{ !startsWith(github.ref, 'refs/tags/') }}
-        uses: actions/upload-artifact@v4
-        with:
-          name: instalador
-          path: instalador/Instalar_Financeiro_*.exe

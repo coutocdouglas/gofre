@@ -669,3 +669,8 @@ h1, h2, h3, h4, #current-month-display { font-family: var(--fonte-titulo); lette
 .ap-status-custom input[type=color] { width: 28px; height: 22px; padding: 0; border: 0; background: none; cursor: pointer; }
 .ap-restaurar { background: transparent; color: var(--text-muted); border: 1px solid var(--line-strong); border-radius: 10px; padding: 8px 14px; font-size: 12px; cursor: pointer; }
 .ap-restaurar:hover { color: var(--text-main); border-color: var(--text-muted); }
+
+.toast-atualizacao { position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%); z-index: 1500; display: flex; align-items: center; gap: 8px;
+  background: var(--surface-3); border: 1px solid var(--line-strong); border-radius: 14px; padding: 8px 10px 8px 14px; box-shadow: var(--shadow-pop); font-size: 13px; color: var(--text-main); }
+.toast-atualizacao .ap-restaurar { color: var(--text-main); border-color: var(--accent); }
+.toast-atualizacao .ta-fechar { background: none; border: 0; color: var(--text-muted); font-size: 18px; cursor: pointer; line-height: 1; padding: 2px 6px; }

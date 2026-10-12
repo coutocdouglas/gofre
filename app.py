@@ -9,7 +9,7 @@ import shutil
 import logging
 import time
 from datetime import datetime
-from threading import Timer, Lock
+from threading import Timer, Lock, Thread
 
 # Quando empacotado (.exe), os arquivos da tela ficam dentro da pasta temporária do PyInstaller.
 _BASE_RECURSOS = getattr(sys, "_MEIPASS", os.path.dirname(os.path.abspath(__file__)))
@@ -971,7 +971,7 @@ def iniciar_bot_telegram():
 # ============================================================
 # Aparência (tema, cor de destaque, tamanho). Fica em arquivo próprio ao lado da pasta 'memoria',
 # não no banco: assim não entra no histórico de desfazer e não mexe nos seus dados.
-APP_VERSAO = "2.5.7"
+APP_VERSAO = "2.5.8"
 PALETAS_ESCURAS = ("concreto", "gofre", "grafite", "meianoite", "floresta", "vinho", "ardosia", "preto")
 PALETAS_CLARAS = ("claro", "areia", "mar", "menta")
 APARENCIA_PADRAO = {"paleta": "concreto", "destaque": "bordo", "densidade": "normal", "status": "paleta"}
@@ -1047,10 +1047,78 @@ def api_atualizacao():
         nova = str(rel.get("tag_name", "")).lstrip("vV")
         base.update({"nova": nova, "url": rel.get("html_url", ""),
                      "disponivel": _versao_tupla(nova) > _versao_tupla(APP_VERSAO)})
+        for ativo in rel.get("assets", []):
+            if re.fullmatch(r"Instalar_Financeiro_[\d.]+\.exe", str(ativo.get("name", ""))):
+                base["instalador_url"] = ativo.get("browser_download_url", "")
+                break
+        base["pode_instalar"] = bool(base.get("instalador_url")) and _pode_autoatualizar()
         _cache_versao.update({"quando": agora, "dados": base})
     except Exception:
         base["erro"] = True                   # sem internet / limite do GitHub: tenta de novo na próxima vez
     return jsonify(base)
+
+
+def _pode_autoatualizar():
+    """Só no programa instalado (Windows). Rodando do código, o aviso apenas abre a página do projeto."""
+    return sys.platform.startswith("win") and bool(getattr(sys, "frozen", False))
+
+
+def _url_instalador_valida(url):
+    return bool(REPO_GITHUB) and re.fullmatch(
+        r"https://github\.com/%s/releases/download/v[\d.]+/Instalar_Financeiro_[\d.]+\.exe" % re.escape(REPO_GITHUB), str(url)) is not None
+
+
+_ESTADO_ATUALIZACAO = {"fase": "parado", "pct": 0, "erro": ""}
+
+
+def _baixar_e_instalar(url):
+    import subprocess
+    import tempfile
+    import urllib.request
+    est = _ESTADO_ATUALIZACAO
+    try:
+        pasta = os.path.join(tempfile.gettempdir(), "Gofre_atualizacao")
+        os.makedirs(pasta, exist_ok=True)
+        destino = os.path.join(pasta, os.path.basename(url))
+        est.update({"fase": "baixando", "pct": 0, "erro": ""})
+        req = urllib.request.Request(url, headers={"User-Agent": "Gofre"})
+        with urllib.request.urlopen(req, timeout=30) as r, open(destino, "wb") as f:
+            total = int(r.headers.get("Content-Length") or 0)
+            lido = 0
+            while True:
+                bloco = r.read(1 << 20)
+                if not bloco:
+                    break
+                f.write(bloco)
+                lido += len(bloco)
+                if total:
+                    est["pct"] = int(lido * 100 / total)
+        if os.path.getsize(destino) < 1_000_000 or (total and lido != total):
+            raise ValueError("download incompleto")
+        est.update({"fase": "instalando", "pct": 100})
+        # Instala por cima, sem janelas, e reabre o Gofre no fim. Os dados (em %APPDATA%) não são tocados.
+        subprocess.Popen([destino, "/SILENT", "/CLOSEAPPLICATIONS", "/NORESTART", "/reabrir=1"], close_fds=True,
+                         creationflags=0x00000008 | 0x00000200)   # DETACHED_PROCESS | NEW_PROCESS_GROUP
+    except Exception as e:
+        est.update({"fase": "erro", "erro": "Não foi possível atualizar agora (%s). Tente de novo mais tarde." % type(e).__name__})
+
+
+@app.route("/api/atualizar_agora", methods=["POST"])
+def api_atualizar_agora():
+    if not _pode_autoatualizar():
+        return jsonify({"status": "erro", "mensagem": "Atualização automática só no programa instalado."}), 400
+    if _ESTADO_ATUALIZACAO["fase"] in ("baixando", "instalando"):
+        return jsonify({"status": "sucesso"})
+    d = api_atualizacao().get_json()
+    if not d.get("disponivel") or not _url_instalador_valida(d.get("instalador_url")):
+        return jsonify({"status": "erro", "mensagem": "Nenhuma versão nova disponível."}), 400
+    Thread(target=_baixar_e_instalar, args=(d["instalador_url"],), daemon=True).start()
+    return jsonify({"status": "sucesso"})
+
+
+@app.route("/api/atualizar_estado")
+def api_atualizar_estado():
+    return jsonify(_ESTADO_ATUALIZACAO)
 
 
 @app.route("/api/abrir_pagina_projeto", methods=["POST"])
