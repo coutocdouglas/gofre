@@ -979,7 +979,7 @@ def iniciar_bot_telegram():
 # ============================================================
 # Aparência (tema, cor de destaque, tamanho). Fica em arquivo próprio ao lado da pasta 'memoria',
 # não no banco: assim não entra no histórico de desfazer e não mexe nos seus dados.
-APP_VERSAO = "2.6.0"
+APP_VERSAO = "2.6.1"
 PALETAS_ESCURAS = ("concreto", "gofre", "grafite", "meianoite", "floresta", "vinho", "ardosia", "preto")
 PALETAS_CLARAS = ("claro", "areia", "mar", "menta")
 APARENCIA_PADRAO = {"paleta": "concreto", "destaque": "bordo", "densidade": "normal", "status": "paleta"}
@@ -1044,7 +1044,7 @@ def api_atualizacao():
     if not REPO_GITHUB:
         return jsonify(base)
     agora = time.time()
-    if _cache_versao["dados"] is not None and agora - _cache_versao["quando"] < 6 * 3600:
+    if request.args.get("forcar") != "1" and _cache_versao["dados"] is not None and agora - _cache_versao["quando"] < 1800:
         return jsonify(_cache_versao["dados"])
     try:
         import urllib.request
@@ -1061,8 +1061,9 @@ def api_atualizacao():
                 break
         base["pode_instalar"] = bool(base.get("instalador_url")) and _pode_autoatualizar()
         _cache_versao.update({"quando": agora, "dados": base})
-    except Exception:
-        base["erro"] = True                   # sem internet / limite do GitHub: tenta de novo na próxima vez
+    except Exception as e:
+        base["erro"] = True
+        base["erro_msg"] = str(e)[:200]       # sem internet / limite do GitHub: tenta de novo na próxima vez
     return jsonify(base)
 
 

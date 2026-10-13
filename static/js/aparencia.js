@@ -128,16 +128,32 @@ function abrirAparencia() { Aparencia.abrir(); }
             b.onclick = () => post('/api/abrir_pagina_projeto', { url: d.url });
         }
     }
-    fetch('/api/atualizacao').then(r => r.json()).then(d => {
-        if (!d || !d.disponivel) return;
+    let toast = null;
+    function verificar(forcar, el, manual) {
+        if (manual && el) el.textContent = 'Verificando…';
+        return fetch('/api/atualizacao' + (forcar ? '?forcar=1' : '')).then(r => r.json()).then(d => {
+            if (d && d.disponivel) {
+                if (el) { el.classList.remove('hidden'); montar(el, d, false); }
+                if (!toast || !document.body.contains(toast)) {
+                    toast = document.createElement('div');
+                    toast.className = 'toast-atualizacao';
+                    toast.innerHTML = '<span class="ta-msg"></span><button type="button" class="ta-fechar" title="Depois" aria-label="Fechar">×</button>';
+                    document.body.appendChild(toast);
+                    montar(toast.querySelector('.ta-msg'), d, true);
+                    toast.querySelector('.ta-fechar').onclick = () => toast.remove();
+                }
+            } else if (manual && el) {
+                el.textContent = d && d.erro ? 'Não consegui verificar agora (' + (d.erro_msg || 'sem internet') + '). Tente de novo.'
+                    : 'Você está na versão mais recente (' + (d.atual || '') + ').';
+            }
+        }).catch(() => { if (manual && el) el.textContent = 'Não consegui verificar agora.'; });
+    }
+    window.verificarAtualizacao = function () {
         const el = document.getElementById('avisoAtualizacao');
-        if (el) { el.classList.remove('hidden'); montar(el, d, false); }
-        const t = document.createElement('div');
-        t.className = 'toast-atualizacao';
-        t.innerHTML = '<span class="ta-msg"></span><button type="button" class="ta-fechar" title="Depois" aria-label="Fechar">×</button>';
-        document.body.appendChild(t);
-        const msg = t.querySelector('.ta-msg');
-        montar(msg, d, true);
-        t.querySelector('.ta-fechar').onclick = () => t.remove();
-    }).catch(() => {});
+        if (el) el.classList.remove('hidden');
+        verificar(true, el, true);
+    };
+    verificar(false, document.getElementById('avisoAtualizacao'), false);
+    setInterval(() => verificar(true, document.getElementById('avisoAtualizacao'), false), 30 * 60 * 1000);
+    window.addEventListener('focus', () => verificar(false, document.getElementById('avisoAtualizacao'), false));
 })();
