@@ -50,8 +50,22 @@ def criar_blueprint(pasta_config):
     def perguntar():
         corpo = request.get_json(silent=True) or {}
         try:
-            texto = P.perguntar(P.carregar(pasta_config()), corpo.get("pergunta"), corpo.get("contexto"), corpo.get("historico"))
-            return jsonify({"ok": True, "resposta": texto})
+            cfg = P.carregar(pasta_config())
+            args = (corpo.get("pergunta"), corpo.get("contexto"), corpo.get("historico"))
+            try:
+                texto = P.perguntar(cfg, *args)
+            except P.ErroIA as e:
+                if e.codigo != 404:
+                    raise
+                # modelo salvo não existe mais: troca sozinho por um que a conta realmente tem
+                prov = cfg["provedor"]
+                novo = P.escolher_modelo(prov, P.listar_modelos(cfg, prov))
+                if not novo or novo == cfg["modelo_" + prov]:
+                    raise
+                cfg["modelo_" + prov] = novo
+                texto = P.perguntar(cfg, *args)
+                P.salvar(pasta_config(), cfg)
+            return jsonify({"ok": True, "resposta": texto, "modelo": cfg["modelo_" + cfg["provedor"]]})
         except P.ErroIA as e:
             return jsonify({"ok": False, "mensagem": str(e)}), 400
 

@@ -979,7 +979,7 @@ def iniciar_bot_telegram():
 # ============================================================
 # Aparência (tema, cor de destaque, tamanho). Fica em arquivo próprio ao lado da pasta 'memoria',
 # não no banco: assim não entra no histórico de desfazer e não mexe nos seus dados.
-APP_VERSAO = "2.6.1"
+APP_VERSAO = "2.6.2"
 PALETAS_ESCURAS = ("concreto", "gofre", "grafite", "meianoite", "floresta", "vinho", "ardosia", "preto")
 PALETAS_CLARAS = ("claro", "areia", "mar", "menta")
 APARENCIA_PADRAO = {"paleta": "concreto", "destaque": "bordo", "densidade": "normal", "status": "paleta"}

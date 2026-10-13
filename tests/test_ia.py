@@ -83,3 +83,23 @@ def test_lista_de_modelos(client, monkeypatch):
 
 def test_so_abre_links_permitidos(client):
     assert client.post("/api/ia/abrir_link", json={"url": "https://evil.com/"}).status_code == 400
+
+
+def test_modelo_inexistente_troca_sozinho_para_um_da_conta(client, monkeypatch):
+    client.post("/api/ia/config", json={"chave_gemini": "AIza" + "x" * 35, "provedor": "gemini", "modelo_gemini": "gemini-antigo"})
+    chamadas = []
+
+    def urlopen(req, timeout=0):
+        chamadas.append(req.full_url)
+        if "models?pageSize" in req.full_url:
+            return Resp(json.dumps({"models": [
+                {"name": "models/gemini-3-flash", "supportedGenerationMethods": ["generateContent"]},
+                {"name": "models/gemini-3-flash-lite", "supportedGenerationMethods": ["generateContent"]},
+                {"name": "models/gemini-2.5-pro", "supportedGenerationMethods": ["generateContent"]}]}).encode())
+        if "gemini-antigo" in req.full_url:
+            raise urllib.error.HTTPError(req.full_url, 404, "x", {}, io.BytesIO(b"not found"))
+        return Resp(json.dumps({"candidates": [{"content": {"parts": [{"text": "ok"}]}}]}).encode())
+    monkeypatch.setattr(urllib.request, "urlopen", urlopen)
+    r = client.post("/api/ia/perguntar", json={"pergunta": "oi", "contexto": "x"}).get_json()
+    assert r["ok"] and r["resposta"] == "ok" and r["modelo"] == "gemini-3-flash"
+    assert client.get("/api/ia/config").get_json()["gemini"]["modelo"] == "gemini-3-flash"

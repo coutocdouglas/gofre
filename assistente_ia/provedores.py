@@ -21,6 +21,9 @@ SISTEMA = (
 
 class ErroIA(Exception):
     """Erro com mensagem já em português, pronta para mostrar na tela."""
+    def __init__(self, msg, codigo=None):
+        super().__init__(msg)
+        self.codigo = codigo
 
 
 # ---------------------------------------------------------------- configuração (arquivo ia.json)
@@ -72,7 +75,7 @@ def _requisicao(url, corpo, cabecalhos, metodo="POST"):
             detalhe = e.read().decode("utf-8", "replace")
         except Exception:
             detalhe = ""
-        raise ErroIA(_traduzir_erro(e.code, detalhe)) from None
+        raise ErroIA(_traduzir_erro(e.code, detalhe), e.code) from None
     except (urllib.error.URLError, TimeoutError, OSError):
         raise ErroIA("Não consegui falar com o serviço de IA. Confira sua internet e tente de novo.") from None
     except ValueError:
@@ -92,6 +95,19 @@ def _traduzir_erro(codigo, detalhe):
     if codigo in (500, 502, 503, 529):
         return "O serviço de IA está instável agora. Tente de novo em instantes."
     return "O serviço de IA recusou o pedido (código %s)." % codigo
+
+
+def escolher_modelo(prov, ids):
+    """Entre os modelos da conta, escolhe um bom e comum (Gemini: flash mais novo; Claude: sonnet mais novo)."""
+    import re
+    ruins = ("lite", "preview", "exp", "image", "tts", "live", "embed", "audio", "vision", "thinking", "8b")
+    chave = "flash" if prov == "gemini" else "sonnet"
+    cand = [m for m in ids if chave in m and not any(r in m for r in ruins)]
+    if not cand:
+        cand = [m for m in ids if chave in m] or list(ids)
+    if not cand:
+        return None
+    return sorted(cand, key=lambda m: ([int(x) for x in re.findall(r"\d+", m)], m), reverse=True)[0]
 
 
 def _mensagens_validas(historico):
